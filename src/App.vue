@@ -11,8 +11,8 @@
         </div>
         <div>
           <b-button-group horizontal>
-            <b-button v-on:click="nextStage(block.id)">Accept</b-button>
-            <b-button>Cancel</b-button>
+            <b-button variant="success" v-on:click="nextStage(block.id)">{{ successButtonTitle(block.status)}}</b-button>
+            <b-button variant="danger">Cancel</b-button>
           </b-button-group>
         </div>
       </div>
@@ -25,8 +25,6 @@
 export default {
   name: 'app',
   mounted(){
-    console.log('mounted');
-
   },
   data () {
     return {
@@ -44,10 +42,29 @@ export default {
   methods: {
     nextStage: function (id) {
       debug.vue('nextStage, id: '+id);
-      debug.vue(this.blocks);
       let b = this.blocks.find(b => b.id === Number(id));
       b.status = this.stages[this.stages.indexOf(b.status)+1];
+    },
+    successButtonTitle(stage){
+      switch (stage){
+        case "Pending":
+          return "Accept";
+          break;
+        case "In Progress":
+          return "Ready";
+          break;
+        case "Ready":
+          return "Done";
+          break;
+        default:
+          return "Done";
+          break;
+      }
+
     }
+  },
+  computed: {
+
   }
 }
 </script>
